@@ -1,0 +1,39 @@
+.example-form-field {
+    width: 200px;
+  }
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .example-full-width {
+    width: 100%;
+  }
+  .mat-option.mat-active {
+    background:#3F51B5 !important;
+    color: white;
+  }
+
+  table {
+    width: 100%;
+  }
+  
+  tr.mat-footer-row {
+    font-weight: bold;
+  }
+  
+  .mat-table-sticky {
+    border-top: 1px solid #e0e0e0;
+  }
+  
+  .example-container {
+    height: 300px;
+    overflow: auto;
+  }
+  
+    
+  .example-button-row .mat-button-base {
+    margin: 8px 8px 8px 0;
+  }
+  

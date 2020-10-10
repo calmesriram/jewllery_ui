@@ -1,0 +1,32 @@
+<mat-toolbar color="primary">
+  <span class="fill-remaining-space">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" [overlapTrigger]="false">
+      <button mat-menu-item routerLink="/home">
+        <mat-icon>home</mat-icon>
+        <span>Home</span>
+      </button>
+      <button mat-menu-item routerLink="/customer">
+        <mat-icon>people_outline</mat-icon>
+        <span>Customer</span>
+      </button>
+      <button mat-menu-item routerLink="/product">
+        <mat-icon>queue</mat-icon>
+        <span>Product</span>
+      </button>
+      <button mat-menu-item routerLink="/receipt">
+        <mat-icon>receipt</mat-icon>
+        <span>Bill</span>
+      </button>
+      <button mat-menu-item routerLink="/print">
+        <mat-icon>print</mat-icon>
+        <span>Print</span>
+      </button>
+    </mat-menu>
+  </span>
+  <span class="fill-remaining-space">Application Title</span>
+</mat-toolbar>
+
+<router-outlet></router-outlet>
