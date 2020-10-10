@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class ApiService {
-public baseurl:String= "http://localhost:3000"
+public baseurl:String= "https://jwlserver.herokuapp.com"
   constructor(public _snackBar: MatSnackBar,public http: HttpClient) {
 
   }
@@ -30,15 +30,15 @@ Getcustomer(){
   })
 }
 
-GetcustomerbyId(id){
-  return new Promise((resolve,reject) => {
-    this.http.get(this.baseurl+"/Customer/"+id).subscribe(res => {
-      resolve(res);
-    }, err => {
-      resolve(err);
-    })
-  })
-}
+// GetcustomerbyId(id){
+//   return new Promise((resolve,reject) => {
+//     this.http.get(this.baseurl+"/Customer/"+id).subscribe(res => {
+//       resolve(res);
+//     }, err => {
+//       resolve(err);
+//     })
+//   })
+// }
 
 Postproduct(data){
   return new Promise((resolve,reject) => {
@@ -60,15 +60,15 @@ return new Promise((resolve,reject) => {
 })
 }
 
-GetproductbyId(id){
-return new Promise((resolve,reject) => {
-  this.http.get(this.baseurl+"/Product/"+id).subscribe(res => {
-    resolve(res);
-  }, err => {
-    resolve(err);
-  })
-})
-}
+// GetproductbyId(id){
+// return new Promise((resolve,reject) => {
+//   this.http.get(this.baseurl+"/Product/"+id).subscribe(res => {
+//     resolve(res);
+//   }, err => {
+//     resolve(err);
+//   })
+// })
+// }
 
   snackmsg(message: string, action ?: string){
     

@@ -3,10 +3,10 @@
     <div class="row">
         <div class="col-sm-12">   
             <div class="card">
-                <!-- <div class="card-header text-center">
+                <div class="card-header text-center">
                   <h1>RKV SILVER</h1>
                   <h3>28/9, 1st Floor,Adhi Raman Nandavanam Street,Shevapet,Salem -636002,TN</h3>
-                </div> -->
+                </div>
                 <div class="card-header">
                     <div class="row">  
                        <div class="col-sm-4"> 
@@ -46,42 +46,35 @@
                </div>
                <br>
                <div class="row">      
-                <div class="col-sm-4">
-                  <form >
-                    <mat-form-field appearance="outline" class="example-full-width">
-                      <input type="text" [(ngModel)]="value2" placeholder="Product Name" aria-label="Number1" matInput [formControl]="countryCtrl2" [matAutocomplete]="auto1" required matTooltip="Type to filter the Product Detail" matTooltipPosition="after">
-                      <button mat-button  matSuffix mat-icon-button aria-label="Clear" (click)="value2=''">
-                        <mat-icon>close</mat-icon>
-                      </button>
-                      <mat-autocomplete #auto1="matAutocomplete">
-                        <mat-option (onSelectionChange)="prod(proditem);" (keydown.enter)="prod(proditem);"  (click)="prod(proditem);" *ngFor="let proditem of filteredCountry2 | async" [value]="proditem.productname">
-                          <span>{{ proditem.productname }} | {{ proditem.qty }}</span>
-                        </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
-                  </form><br>
-                  <div class="col-sm-8"  *ngIf="value2">
-                    <form  [formGroup]="productForm" >
-                    <mat-form-field  appearance="outline" class="example-full-width">
-                      <mat-label>Product Name</mat-label>
-                      <input matInput readonly formControlName="productname">
-                    </mat-form-field>
-                      
-                      
+                <div class="col-sm-12">
+                  <form class="form-inline" (ngSubmit)="add();" [formGroup]="productForm">                
+                    <div class="col-sm-4">
                       <mat-form-field appearance="outline" class="example-full-width">
-                        <mat-label>Rate</mat-label>
-                        <input matInput readonly formControlName="rate">
-                      </mat-form-field>
-    
-                      <mat-form-field appearance="outline" class="example-full-width">
-                        <mat-label>Quantity</mat-label>
-                        <input matInput formControlName="qty" max >  
-                      </mat-form-field>
-                      <button mat-raised-button (click)="add()" color="primary">Add</button>
-                    </form>
+                        <input type="text" formControlName="productname" [(ngModel)]="value2" placeholder="Product Name" aria-label="Number1" matInput [formControl]="countryCtrl2" [matAutocomplete]="auto1" required matTooltip="Type to filter the Product Detail" matTooltipPosition="after">
+                        <button mat-button  matSuffix mat-icon-button aria-label="Clear" (click)="value2=''">
+                          <mat-icon>close</mat-icon>
+                        </button>
+                        <mat-autocomplete #auto1="matAutocomplete">
+                          <mat-option (onSelectionChange)="prod(proditem);" (keydown.enter)="prod(proditem);"  (click)="prod(proditem);" *ngFor="let proditem of filteredCountry2 | async" [value]="proditem.productname">
+                            <span>{{ proditem.productname }} | {{ proditem.qty }}</span>
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>                    </div>
+                  <div class="col-sm-4">
+                    <mat-form-field appearance="outline"  class="example-full-width">
+                      <mat-label>Rate</mat-label>
+                      <input matInput type="number" autocomplete="off" formControlName="rate" max >  
+                    </mat-form-field>
                   </div>
-                </div>             
-                <div class="col-sm-8" *ngIf="dataSource.data.length != 0">                  
+                  <div class="col-sm-4">
+                    <div class="example-button-row">
+                    <button mat-raised-button  color="primary">Add</button>
+                    </div>
+                  </div>
+                </form><br>
+              </div>   
+                <!-- <div class="col-sm-12" *ngIf="dataSource.data.length != 0">                   -->
+                  <div class="col-sm-8">                  
                   <mat-form-field>
                     <mat-label>Search</mat-label>
                     <input matInput (keyup)="applyFilter($event)" placeholder="Name " #input>
@@ -93,25 +86,22 @@
                         <th mat-header-cell *matHeaderCellDef> No. </th>
                         <td mat-cell *matCellDef="let producttable;let i = index;"> {{i+1}}. </td>
                         <td mat-footer-cell *matFooterCellDef>  </td>
+
                     </ng-container>
 
                       <ng-container matColumnDef="productname">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Product Name </th>
                         <td mat-cell *matCellDef="let producttable"> {{producttable.productname}} </td>
                         <td mat-footer-cell *matFooterCellDef>  </td>
+
                       </ng-container>
                   
                       <ng-container matColumnDef="rate">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Rate </th>
                         <td mat-cell *matCellDef="let producttable"> {{producttable.rate}} </td>
-                        <td mat-footer-cell *matFooterCellDef>  </td>
+                        <td mat-footer-cell *matFooterCellDef>{{getTotalAmount() | currency:'INR'}} </td>
                       </ng-container>
-
-                      <ng-container matColumnDef="qty">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantity </th>
-                        <td mat-cell *matCellDef="let producttable"> {{producttable.qty}} </td>
-                        <td mat-footer-cell *matFooterCellDef>  </td>
-                      </ng-container>
+<!-- s -->
 
                       <ng-container matColumnDef="Delete">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Delete </th>
@@ -119,6 +109,7 @@
                           <mat-icon (click)="remove(producttable)" color="warn">delete</mat-icon>
                         </td>
                         <td mat-footer-cell *matFooterCellDef>  </td>
+
                       </ng-container>
                   
                       <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
@@ -129,7 +120,49 @@
                   </div>
                   
                            
-                </div>  
+                </div> 
+                <div class="col-sm-4"> 
+                  <form class="form-inline" autocomplete="off" [formGroup]="gstForm">                
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Total Amount Before Tax</mat-label>
+                    <input matInput placeholder="Total Amount" readonly formControlName="totamt"  value="{{getTotalAmount() || 0}}">
+                  </mat-form-field>
+
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Total Tax percentage</mat-label>
+                    <input matInput placeholder="Total Tax percentage" readonly  formControlName="tottaxpercent">
+                  </mat-form-field>
+
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Tax Amount</mat-label>
+                    <input matInput placeholder="taxamt" readonly  formControlName="taxamt" >
+                  </mat-form-field>
+
+
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Tax of CGST 1.5 %</mat-label>
+                    <input matInput placeholder="cgsttax" readonly formControlName="cgsttax" >
+                  </mat-form-field>
+
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Tax of SGST 1.5 %</mat-label>
+                    <input matInput placeholder="sgsttax" readonly formControlName="sgsttax" >
+                  </mat-form-field>
+
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Total Amount After Tax</mat-label>
+                    <input matInput placeholder="totalamounttaxs" readonly formControlName="totamtwithtax" >
+                  </mat-form-field>
+
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Round off</mat-label>
+                    <input matInput placeholder="roundoff" readonly formControlName="roundoff" >
+                  </mat-form-field>
+                  <div class="example-button-row">
+                    <button mat-raised-button (click)="taxcalc();" *ngIf="dataSource.data.length != 0"  color="primary">Calculate</button>
+                  </div>
+                  </form>
+                </div>
                </div>
                     </div>         
                 </div>              

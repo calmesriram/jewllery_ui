@@ -13,7 +13,7 @@ var ELEMENT_DATA: any = [];
 })
 export class ProductComponent implements OnInit {
 
-  displayedColumns:any = ['productname','qty','rate','date'];  
+  displayedColumns:any = ['productname','date'];  
   dataSource = new MatTableDataSource(ELEMENT_DATA);  
   @ViewChild(MatPaginator) paginator: MatPaginator;  
   
@@ -23,8 +23,8 @@ export class ProductComponent implements OnInit {
   ngOnInit(): void {
     this.productForm = this.formBuilder.group({
       productname: ['', Validators.required],
-      rate: ['', Validators.required],
-      qty: ['', Validators.required],     
+      // rate: ['', Validators.required],
+      // qty: ['', Validators.required],     
       date: ['', Validators.required]
       
   });

@@ -13,10 +13,11 @@ var ELEMENT_DATA: any = [];
   styleUrls: ['./bill.component.css']
 })
 export class BillComponent implements OnInit {
-  displayedColumns:any = ['position','productname','qty','rate','Delete'];  
+  displayedColumns:any = ['position','productname','rate','Delete'];  
   dataSource = new MatTableDataSource(ELEMENT_DATA);  
   countryCtrl: FormControl;
   productForm: FormGroup;
+  gstForm: FormGroup;
   selectedproditem:any=[];
   countryCtrl2: FormControl;
   country_lis:any=[];
@@ -53,10 +54,19 @@ proditem;
     this.productForm = this.formBuilder.group({
       productname: ['', Validators.required],
       rate: ['', Validators.required],
-      qty: ['', Validators.required]
+      // qty: ['', Validators.required]
     
       
   });
+  this.gstForm = this.formBuilder.group({
+    totamt: ['', Validators.required],
+    taxamt: ['', Validators.required],
+    tottaxpercent: ['', Validators.required],
+    cgsttax: ['', Validators.required],
+    sgsttax: ['', Validators.required],
+    roundoff: ['', Validators.required],
+    totamtwithtax: ['', Validators.required]
+  })
     this.getcustomer();
     this.getproduct();
   }
@@ -89,11 +99,12 @@ proditem;
     this.proditem = item;
     // this.proditem = this.productForm.controls.qty.setValue(0);
     this.productForm.controls.productname.setValue(item.productname);
-    this.productForm.controls.rate.setValue(item.rate);
-    this.productForm.controls.qty.setValue(0);   
+    // this.productForm.controls.qty.setValue(0);   
     
   }
-
+  getTotalAmount() {
+    return this.selectedproditem.map(t => t.rate).reduce((acc, value) => acc + value, 0);
+  }
   getcustomer(){
     this.api.Getcustomer().then((data:any) =>{
       console.log(data.data.length)
@@ -125,18 +136,37 @@ proditem;
   })
 }
 
-add() {  
-  this.proditem.qty = this.productForm.controls.qty.value;
-  if(this.proditem.qty == 0){
-    this.api.snackmsg("You Cannot Add while Qty is 0","close");
-  }else{
+add() { 
+  this.proditem.rate = this.productForm.controls.rate.value
 this.selectedproditem.push(this.proditem);
 this.productForm.reset();
+console.log(this.selectedproditem)
 this.value2=""
 this.tabledata();
-  }  
+   
+}
+taxcalc(){
+  let taxamount =0;
+  let tax_cgst_sgst =0;
+  let totalamount_withtax = 0;
+  let totalamount = 0;
+  
+  this.gstForm.controls.totamt.setValue(this.getTotalAmount());  
+  totalamount = this.gstForm.controls.totamt.value
+  taxamount = (totalamount * (0.03));
+  // console.log(taxamount)
+   tax_cgst_sgst = (taxamount / 2);
+   totalamount_withtax = totalamount + taxamount;
+  this.gstForm.controls.tottaxpercent.setValue(3);
+  this.gstForm.controls.taxamt.setValue(taxamount);
+  this.gstForm.controls.cgsttax.setValue(tax_cgst_sgst);
+  this.gstForm.controls.sgsttax.setValue(tax_cgst_sgst);
+  this.gstForm.controls.totamtwithtax.setValue(totalamount_withtax);  
+  this.gstForm.controls.roundoff.setValue(Math.round(totalamount_withtax));
+  
 }
 tabledata(){
+  console.log(this.getTotalAmount())
   console.log(this.selectedproditem)
   this.dataSource = new MatTableDataSource(this.selectedproditem);
 }
